@@ -14,7 +14,7 @@ nEdge <- 2 * nTaxa - 3
 moves = VectorMoves()
 
 # Uniform prior on tree topologies
-topology ~ dnUniformTopology(taxa, rooted = TRUE)
+topology ~ dnUniformTopology(taxa)
 moves.append( mvNNI(topology, weight = nEdge / 10.0) )
 moves.append( mvSPR(topology, weight = nEdge / 50.0) )
 
@@ -55,7 +55,7 @@ partition_rate := [ rate_neo / (1 + rate_neo), (1 / (1 + rate_neo)) ] / nChar * 
 
 root_freqs ~ dnDirichlet([1, 1])
 moves.append( mvBetaSimplex(root_freqs, weight = 1) )
-moves.append( mvDirichletSimplex(root_freqs, weight = 1) )
+
 
 
 
@@ -107,4 +107,4 @@ for (k in 2:maxK) {
 mymodel = model(phylogeny)
 
 monitors = VectorMonitors()
-monitors.append( mnScreen(printgen = 300, prior = FALSE, posterior = FALSE, rate_neo) )
+monitors.append( mnScreen(printgen = 300, prior = FALSE, posterior = FALSE, rate_neo, root_freqs) )
